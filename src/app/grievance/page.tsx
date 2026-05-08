@@ -5,12 +5,12 @@ import { useState } from "react";
 import { PageHero } from "@/components/site/PageHero";
 import { ShieldAlert } from "lucide-react";
 
-
 const RECIPIENT = "aswinikumar@cutmap.ac.in";
 
 function GrievancePage() {
   const [submitted, setSubmitted] = useState(false);
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({ name: "", email: "", phone: "", message: "" });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -19,17 +19,32 @@ function GrievancePage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const subject = `Grievance from ${formData.name}`;
-    const body =
-      `Name: ${formData.name}\n` +
-      `Email: ${formData.email}\n\n` +
-      `Grievance:\n${formData.message}`;
-    window.location.href = `mailto:${RECIPIENT}?subject=${encodeURIComponent(
-      subject,
-    )}&body=${encodeURIComponent(body)}`;
-    setSubmitted(true);
+    setIsSubmitting(true);
+    try {
+      const response = await fetch(`https://formsubmit.co/ajax/${RECIPIENT}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          _subject: `New grievance from ${formData.name}`,
+          ...formData,
+        }),
+      });
+      if (response.ok) {
+        setSubmitted(true);
+        setFormData({ name: "", email: "", phone: "", message: "" });
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      alert("Error submitting the form. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -57,7 +72,7 @@ function GrievancePage() {
             <div className="mt-8 rounded-xl bg-primary-soft/60 p-6 text-center">
               <div className="font-display text-lg text-primary">Received</div>
               <p className="mt-1 text-sm text-muted-foreground">
-                Your email client should have opened with your grievance. If not, please email us directly at {RECIPIENT}.
+                Your grievance has been successfully submitted. Our team will review it and get back to you.
               </p>
               <button
                 type="button"
@@ -98,6 +113,22 @@ function GrievancePage() {
                 />
               </div>
               <div>
+                <label htmlFor="g-phone" className="text-sm font-medium text-foreground">
+                  Phone <span className="text-accent">*</span>
+                </label>
+                <input
+                  id="g-phone"
+                  name="phone"
+                  type="tel"
+                  required
+                  pattern="[789][0-9]{9}"
+                  title="Phone number must be exactly 10 digits and start with 7, 8, or 9"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className="mt-2 w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm outline-none transition-shadow focus:ring-2 focus:ring-ring/40"
+                />
+              </div>
+              <div>
                 <label htmlFor="g-message" className="text-sm font-medium text-foreground">
                   Message <span className="text-accent">*</span>
                 </label>
@@ -114,9 +145,10 @@ function GrievancePage() {
               </div>
               <button
                 type="submit"
-                className="justify-self-start inline-flex items-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-soft transition-transform hover:-translate-y-0.5"
+                disabled={isSubmitting}
+                className="justify-self-start inline-flex items-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-soft transition-transform hover:-translate-y-0.5 disabled:opacity-70 disabled:hover:translate-y-0"
               >
-                Submit grievance
+                {isSubmitting ? "Submitting..." : "Submit grievance"}
               </button>
             </form>
           )}
