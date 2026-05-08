@@ -60,28 +60,30 @@ function DronePage() {
             }}
           />
           <div className="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-            <div className="flex items-start gap-5">
-              <div
-                className="grid h-16 w-16 place-items-center rounded-2xl bg-white/15 ring-1 ring-white/25 backdrop-blur shrink-0"
-              >
-                <Plane className="h-7 w-7" />
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center gap-4 md:gap-5">
+                <div className="grid h-14 w-14 md:h-16 md:w-16 place-items-center rounded-2xl bg-white/15 ring-1 ring-white/25 backdrop-blur shrink-0">
+                  <Plane className="h-6 w-6 md:h-7 md:w-7" />
+                </div>
+                <div>
+                  <span className="inline-block rounded-full bg-white/15 px-3 py-1 text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.18em] text-white backdrop-blur ring-1 ring-white/20">
+                    Sister Company
+                  </span>
+                  <h2 className="mt-1 font-display text-2xl md:text-3xl lg:text-4xl text-balance leading-tight">
+                    Super Bee Aeronautics
+                  </h2>
+                </div>
               </div>
-              <div>
-                <span className="inline-block rounded-full bg-white/15 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-white backdrop-blur ring-1 ring-white/20">
-                  Sister Company
-                </span>
-                <h2 className="mt-3 font-display text-3xl md:text-4xl text-balance">
-                  Super Bee Aeronautics
-                </h2>
-                <p className="mt-2 max-w-lg text-white/85">
-                  Our aerospace arm building drone systems for agriculture, mapping and rural
-                  logistics. Visit the official site to learn more.
-                </p>
-              </div>
+              <p className="max-w-lg text-white/85 text-sm md:text-base">
+                Our aerospace arm building drone systems for agriculture, mapping and rural
+                logistics. Visit the official site to learn more.
+              </p>
             </div>
-            <span className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground shadow-elevated transition-transform group-hover:-translate-y-0.5">
-              Visit website <ExternalLink className="h-4 w-4" />
-            </span>
+            <div className="w-full md:w-auto flex justify-center mt-2 md:mt-0">
+              <span className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground shadow-elevated transition-transform group-hover:-translate-y-0.5">
+                Visit website <ExternalLink className="h-4 w-4" />
+              </span>
+            </div>
           </div>
         </a>
       </section>

@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { ChevronDown } from "lucide-react";
 
 import {
   ReactFlow,
@@ -314,7 +315,30 @@ function OrganogramPage() {
       />
 
       <section className="container-prose pb-16">
-        <div className="rounded-3xl border border-border bg-card shadow-soft overflow-hidden">
+        {/* MOBILE VIEW: Interactive Accordion */}
+        <div className="md:hidden flex flex-col gap-4 pb-10">
+          <div
+            className="rounded-2xl p-6 text-center shadow-soft"
+            style={{
+              background: toneStyle.top.background,
+              color: toneStyle.top.color,
+            }}
+          >
+            <div className="font-display text-lg font-medium">Managing Director</div>
+            <div className="mt-1 text-xs uppercase tracking-widest opacity-80">
+              Leadership
+            </div>
+          </div>
+
+          <div className="mt-2 flex flex-col gap-3">
+            {branches.map((b) => (
+              <MobileBranchCard key={b.id} branch={b} />
+            ))}
+          </div>
+        </div>
+
+        {/* DESKTOP VIEW: React Flow Canvas */}
+        <div className="hidden md:block rounded-3xl border border-border bg-card shadow-soft overflow-hidden">
           <div style={{ width: "100%", height: "78vh", minHeight: 600 }}>
             <ReactFlow
               nodes={nodes}
@@ -389,3 +413,78 @@ function OrganogramPage() {
 }
 
 export default OrganogramPage;
+
+function MobileBranchCard({ branch }: { branch: Branch }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="rounded-2xl border border-border bg-card shadow-sm overflow-hidden transition-all duration-300">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex items-center justify-between p-5 text-left"
+        style={{ borderLeft: `4px solid ${toneStyle.gm.ring}` }}
+      >
+        <div>
+          <div className="font-display font-medium text-foreground text-base">
+            {branch.head}
+          </div>
+          <div className="text-xs text-muted-foreground mt-1 uppercase tracking-wider">
+            {branch.subtitle}
+          </div>
+        </div>
+        <ChevronDown
+          className={`w-5 h-5 text-muted-foreground transition-transform duration-300 ${
+            isOpen ? "rotate-180" : ""
+          }`}
+        />
+      </button>
+
+      <div
+        className="grid transition-all duration-300 ease-in-out"
+        style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
+      >
+        <div className="overflow-hidden">
+          <div className="p-5 pt-0 bg-muted/10">
+            <div className="flex flex-col gap-8 mt-2">
+              {branch.chains.map((chain, idx) => (
+                <div
+                  key={idx}
+                  className="flex flex-col relative before:absolute before:left-[15px] before:top-2 before:bottom-2 before:w-0.5 before:bg-border"
+                >
+                  {chain.map((node, nIdx) => {
+                    const t = toneStyle[node.tone];
+                    return (
+                      <div
+                        key={nIdx}
+                        className="flex items-start gap-4 mb-5 last:mb-0 relative"
+                      >
+                        <div
+                          className="w-8 h-8 rounded-full border-[3px] border-background flex items-center justify-center shrink-0 z-10 shadow-sm"
+                          style={{
+                            background: t.background,
+                            color: t.color,
+                          }}
+                        >
+                          <div className="w-1.5 h-1.5 rounded-full bg-current opacity-70" />
+                        </div>
+                        <div className="pt-1.5">
+                          <div className="font-medium text-sm text-foreground">
+                            {node.title}
+                          </div>
+                          <div className="text-[11px] text-muted-foreground mt-0.5 uppercase tracking-wider">
+                            {node.tone === "mid" ? "Management" : "Execution"}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+

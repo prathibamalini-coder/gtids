@@ -4,7 +4,7 @@ import { PageHero } from "@/components/site/PageHero";
 import { Mail, MapPin, Phone, Globe } from "lucide-react";
 import { useState } from "react";
 
-const RECIPIENT = "aswinikumar@cutmap.ac.in";
+const RECIPIENT = "info@gramtarang.org";
 
 function ContactPage() {
   const [submitted, setSubmitted] = useState(false);

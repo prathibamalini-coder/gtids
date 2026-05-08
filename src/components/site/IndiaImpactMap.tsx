@@ -168,14 +168,14 @@ export function IndiaImpactMap() {
             "0 30px 60px -30px oklch(0.36 0.07 158 / 0.35), inset 0 1px 0 0 oklch(1 0 0 / 0.7), inset 0 -2px 6px 0 oklch(0 0 0 / 0.05)",
         }}
       >
-        <div className="text-center mb-3">
-          <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-primary">
-            Operational Presence
+        {/* <div className="text-center mb-3">
+          <span className="text-[11px] font-semibold uppercase tracking-[0.22em] md:text-2xl text-primary">
+            Operational Presence 15 States
           </span>
-          <h3 className="mt-1 font-display text-xl md:text-2xl text-foreground">
-            15 States · Headquartered in Visakhapatnam
+          <h3 className="mt-1 font-display text-xl md:text-xl text-foreground">
+            Headquartered in Visakhapatnam
           </h3>
-        </div>
+        </div> */}
 
         <div className="relative">
           <ComposableMap

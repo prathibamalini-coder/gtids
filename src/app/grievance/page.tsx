@@ -5,7 +5,7 @@ import { useState } from "react";
 import { PageHero } from "@/components/site/PageHero";
 import { ShieldAlert } from "lucide-react";
 
-const RECIPIENT = "aswinikumar@cutmap.ac.in";
+const RECIPIENT = "info@gramtarang.org";
 
 function GrievancePage() {
   const [submitted, setSubmitted] = useState(false);
